@@ -1,5 +1,7 @@
 # 自用脚本 for 青龙面板
 
+[![Node.js CI](https://github.com/hex-ci/smzdm_script/actions/workflows/node.js.yml/badge.svg)](https://github.com/hex-ci/smzdm_script/actions/workflows/node.js.yml)
+
 ## 脚本内容
 
 * 每日签到
@@ -26,7 +28,7 @@
 ### 青龙拉库
 
 ```bash
-ql repo https://github.com/hex-ci/smzdm_script.git "" "env.js|bot.js|sendNotify.js" "env.js|bot.js|sendNotify.js"
+ql repo https://github.com/hex-ci/smzdm_script.git "smzdm_" "" "env.js|bot.js|sendNotify.js|library_" "main"
 ```
 
 建议自行更改青龙面板的脚本执行时间
@@ -60,12 +62,21 @@ ql repo https://github.com/hex-ci/smzdm_script.git "" "env.js|bot.js|sendNotify.
 * `SMZDM_USER_AGENT_APP`: 这个值是可选值，是指 APP 的 User-Agent，从 APP 的 API 请求头中抓包得到，建议抓取 Android 的 User-Agent，不填使用脚本默认值。
 * `SMZDM_USER_AGENT_WEB`: 这个值是可选值，是指 APP 中访问网页的 User-Agent，一般在 APP 内的转盘网页中抓包得到，建议抓取 Android 的 User-Agent，不填使用脚本默认值。
 * `SMZDM_COMMENT`: 如果要完成评论文章的任务请设置这个环境变量，环境变量的内容是评论的文案，文案要大于 10 个汉字，建议用比较个性化的文案，脚本发布评论后会删除这条评论，但是为防止删除失败的情况，请尽量用好一点的文案，防止被判定为恶意灌水。
-* `SMZDM_CROWD_SILVER_5`: 每日抽奖任务默认只进行免费抽奖，如要进行 5 碎银子的抽奖，请设置这个环境变量的值为 `yes`。
+* `SMZDM_CROWD_SILVER_5`: 每日抽奖任务默认只进行免费抽奖，如要进行 5 碎银子的抽奖，请设置这个环境变量的值为 `yes`，请注意，只有在没有免费抽奖的时候，才会执行非免费抽奖，而且，这个抽奖不是转盘抽奖。
 * `SMZDM_CROWD_KEYWORD`: 抽奖关键词，执行非免费抽奖时，会优先选择包含此关键词的抽奖，如果未找到包含此关键词的抽奖，则会随机选择一个。
+* `SMZDM_TASK_TESTING`: 是否运行全民众测能量值任务，如要运行此任务，请设置这个环境变量的值为 `yes`，否则不运行。
 
 ## 交流群
 
 https://t.me/smzdm_script
+
+## 推荐🐔场
+
+自用🐔场，稳定，已用 5 年以上，[点这里注册](https://inv.easyfastcloud.com/#/register?code=RpZdsM6U)
+
+## 其它说明
+
+使用本脚本可能会造成你的账号临时或永久封禁，请自行评估是否使用本脚本。
 
 ## 注意事项
 

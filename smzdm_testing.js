@@ -8,7 +8,7 @@ cron: 20 15 * * *
 const Env = require('./env');
 const { requestApi, getEnvCookies, wait } = require('./bot');
 const notify = require('./sendNotify');
-const { SmzdmTaskBot } = require('./smzdm_task');
+const { SmzdmTaskBot } = require('./library_task');
 
 // ------------------------------------
 
@@ -16,7 +16,7 @@ const $ = new Env('smzdm 全民众测能量值任务');
 
 class SmzdmTestingTaskBot extends SmzdmTaskBot {
   constructor(cookie) {
-    super(cookie);
+    super(cookie, $);
   }
 
   // 主函数
@@ -54,12 +54,12 @@ class SmzdmTestingTaskBot extends SmzdmTaskBot {
     const { isSuccess, data, response } = await requestApi('https://zhiyou.m.smzdm.com/task/task/ajax_get_activity_id', {
       method: 'get',
       data: {
-        'from': 'zhongce',
+        'from': 'zhongce'
       },
       headers: {
         ...this.getHeadersForWeb(),
         Origin: 'https://test.m.smzdm.com',
-        Referer: 'https://test.m.smzdm.com/',
+        Referer: 'https://test.m.smzdm.com/'
       }
     });
 
@@ -80,9 +80,9 @@ class SmzdmTestingTaskBot extends SmzdmTaskBot {
     const { isSuccess, data, response } = await requestApi('https://zhiyou.m.smzdm.com/task/task/ajax_get_activity_info', {
       method: 'get',
       data: {
-        'activity_id': id,
+        'activity_id': id
       },
-      headers: this.getHeadersForWeb(),
+      headers: this.getHeadersForWeb()
     });
 
     if (isSuccess) {
@@ -101,11 +101,11 @@ class SmzdmTestingTaskBot extends SmzdmTaskBot {
 
     const { isSuccess, data, response } = await requestApi('https://test.m.smzdm.com/win_coupon/user_data', {
       method: 'get',
-      headers: this.getHeadersForWeb(),
+      headers: this.getHeadersForWeb()
     });
 
     if (isSuccess) {
-      let msg = `当前拥有必中券: ${data.data.my_energy.my_energy_total}\n必中券过期时间: ${data.data.my_energy.energy_expired_time}`;
+      const msg = `当前拥有必中券: ${data.data.my_energy.my_energy_total}\n必中券过期时间: ${data.data.my_energy.energy_expired_time}`;
 
       $.log(msg);
 
@@ -123,9 +123,9 @@ class SmzdmTestingTaskBot extends SmzdmTaskBot {
     const { isSuccess, response } = await requestApi('https://zhiyou.m.smzdm.com/task/task/ajax_activity_task_receive', {
       method: 'post',
       data: {
-        'task_id': taskId,
+        'task_id': taskId
       },
-      headers: this.getHeadersForWeb(),
+      headers: this.getHeadersForWeb()
     });
 
     if (isSuccess) {
@@ -133,7 +133,7 @@ class SmzdmTestingTaskBot extends SmzdmTaskBot {
 
       return {
         isSuccess,
-        msg: '',
+        msg: ''
       };
     }
     else {
@@ -141,13 +141,19 @@ class SmzdmTestingTaskBot extends SmzdmTaskBot {
 
       return {
         isSuccess,
-        msg: '领取任务奖励失败！',
+        msg: '领取任务奖励失败！'
       };
     }
   }
 }
 
 !(async () => {
+  if (process.env.SMZDM_TASK_TESTING != 'yes') {
+    $.log('\n🟡请设置 SMZDM_TASK_TESTING 环境变量值为 yes 后才能运行全民众测能量值任务！');
+
+    return;
+  }
+
   const cookies = getEnvCookies();
 
   if (cookies === false) {
